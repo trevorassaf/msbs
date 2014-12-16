@@ -1,0 +1,16 @@
+/**
+ * Sexes
+ */
+CREATE TABLE Sexes 
+  id UNSIGNED INT NOT NULL AUTO_INCREMENT UNIQUE,
+  PRIMARY KEY(id),
+  created_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  last_updated_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  sex VARCHAR(20) NOT NULL UNIQUE);
+
+/**
+ * Insert sex enum values. 
+ */
+INSERT INTO Sexes (sex) VALUES('male');
+INSERT INTO Sexes (sex) VALUES('female');
+INSERT INTO Sexes (sex) VALUES('other');

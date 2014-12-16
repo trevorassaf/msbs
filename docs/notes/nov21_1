@@ -1,0 +1,39 @@
+TODO:
+  - submit quiz to volunteer services
+  - complete reference form (KP?) and submit to volunteer services
+  - receive flu shot/get it validated at UM
+  - receive flu shot
+
+NOTES:
+  - 3 data entry systems:
+    - ECW:
+      - eClinicalWorks
+      - stores scanned copies of physical documents in addition to 
+    - MIDAS:
+      - St. John's dbms
+      - 
+    - MySQL:
+      - stores logistical information extracted from ecw/midas
+
+- patient is designated as research if they have a surgery at st. johns
+  - surgery in the same region, stop following first region, follow new region
+  - surgery in different region, follow both regions
+
+- export list from ecw:
+  - 
+
+- Questions: do we schedule a couple of months out and then just print out the schedule for the day?
+  - no, currently we just create schedule for the day, because it takes 2 hours to generate the schedule
+  - IMPORTANT: this can be automated...
+  - time consuming part:
+    - need to look at patient docs for every single person and check if new surgery occurred because the manual data is not 
+      trustworthy
+    - 
+- Scheduling process can be automated, just need to upload the text file from ecw into
+  a program that is connected to mysql.
+
+-- TODO:
+  - refactor table schema for research_status
+    - figure out enums and foreign keys and send to krishna for validation
+    - write email to krishna requesting additional computer
+  
