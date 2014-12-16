@@ -1,11 +1,11 @@
 /**
- * Checkup calls
+ * Interview calls 
  */
-CREATE TABLE CheckupCalls
-  id UNSIGNED INT NOT NULL AUTO_INCREMENT UNIQUE,
+CREATE TABLE InterviewCalls (
+  id INT UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
   PRIMARY KEY(id),
   created_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   last_updated_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   call_time TIMESTAMP NOT NULL,
-  checkup_info_id UNSIGNED INT NOT NULL,
-  FOREIGN KEY(checkup_info_id) REFERENCES CheckupInfos(id));
+  interview_info_id INT UNSIGNED NOT NULL,
+  FOREIGN KEY(interview_info_id) REFERENCES Interviews(id));
