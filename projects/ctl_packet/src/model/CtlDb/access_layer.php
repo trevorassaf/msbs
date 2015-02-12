@@ -35,23 +35,22 @@ class Patient extends CtlDb {
 
 }
 
-class PostOpComplications extends CtlDb {
+class Surgery extends CtlDb {
 
-	const VALUE = 'value';
+	const DOS = 'dos';
 
 	protected static $keys = array(
-		array(self::VALUE),
 	);
 
 	protected static function genChildDbFieldTableTemplate() {
 		return array(
-			self::VALUE => new AccessLayerField(DataTypeName::STRING),
+			self::DOS => new AccessLayerField(DataTypeName::TIMESTAMP),
 		);
 	}
 
-	public function getValue() { return $this->childDbFieldTable[self::VALUE]->getValue(); }
+	public function getDos() { return $this->childDbFieldTable[self::DOS]->getValue(); }
 
-	public function setValue($value) { $this->childDbFieldTable[self::VALUE]->setValue($value); }
+	public function setDos($dos) { $this->childDbFieldTable[self::DOS]->setValue($dos); }
 
 }
 
@@ -193,6 +192,150 @@ class LumbarPainRatngs extends CtlDb {
 	public function setGroin($groin) { $this->childDbFieldTable[self::GROIN]->setValue($groin); }
 
 	public function setTesticular($testicular) { $this->childDbFieldTable[self::TESTICULAR]->setValue($testicular); }
+
+}
+
+class Region_Surgery_join_table extends CtlDb {
+
+	const SURGERY_ID = 'Surgery_id';
+	const REGION_ID = 'Region_id';
+
+	protected static $keys = array();
+
+	protected static function genChildDbFieldTableTemplate() {
+		return array(
+			self::SURGERY_ID => new AccessLayerField(DataTypeName::UNSIGNED_INT),
+			self::REGION_ID => new AccessLayerField(DataTypeName::UNSIGNED_INT),
+		);
+	}
+
+	public function getSurgeryId() { return $this->childDbFieldTable[self::SURGERY_ID]->getValue(); }
+
+	public function getRegionId() { return $this->childDbFieldTable[self::REGION_ID]->getValue(); }
+
+	public function setSurgeryId($Surgery_id) { $this->childDbFieldTable[self::SURGERY_ID]->setValue($Surgery_id); }
+
+	public function setRegionId($Region_id) { $this->childDbFieldTable[self::REGION_ID]->setValue($Region_id); }
+
+}
+
+class Surgery_SurgeryType_join_table extends CtlDb {
+
+	const SURGERY_ID = 'Surgery_id';
+	const SURGERYTYPE_ID = 'SurgeryType_id';
+
+	protected static $keys = array();
+
+	protected static function genChildDbFieldTableTemplate() {
+		return array(
+			self::SURGERY_ID => new AccessLayerField(DataTypeName::UNSIGNED_INT),
+			self::SURGERYTYPE_ID => new AccessLayerField(DataTypeName::UNSIGNED_INT),
+		);
+	}
+
+	public function getSurgeryId() { return $this->childDbFieldTable[self::SURGERY_ID]->getValue(); }
+
+	public function getSurgeryTypeId() { return $this->childDbFieldTable[self::SURGERYTYPE_ID]->getValue(); }
+
+	public function setSurgeryId($Surgery_id) { $this->childDbFieldTable[self::SURGERY_ID]->setValue($Surgery_id); }
+
+	public function setSurgeryTypeId($SurgeryType_id) { $this->childDbFieldTable[self::SURGERYTYPE_ID]->setValue($SurgeryType_id); }
+
+}
+
+class PostOpComplications_Surgery_join_table extends CtlDb {
+
+	const SURGERY_ID = 'Surgery_id';
+	const POSTOPCOMPLICATIONS_ID = 'PostOpComplications_id';
+
+	protected static $keys = array();
+
+	protected static function genChildDbFieldTableTemplate() {
+		return array(
+			self::SURGERY_ID => new AccessLayerField(DataTypeName::UNSIGNED_INT),
+			self::POSTOPCOMPLICATIONS_ID => new AccessLayerField(DataTypeName::UNSIGNED_INT),
+		);
+	}
+
+	public function getSurgeryId() { return $this->childDbFieldTable[self::SURGERY_ID]->getValue(); }
+
+	public function getPostOpComplicationsId() { return $this->childDbFieldTable[self::POSTOPCOMPLICATIONS_ID]->getValue(); }
+
+	public function setSurgeryId($Surgery_id) { $this->childDbFieldTable[self::SURGERY_ID]->setValue($Surgery_id); }
+
+	public function setPostOpComplicationsId($PostOpComplications_id) { $this->childDbFieldTable[self::POSTOPCOMPLICATIONS_ID]->setValue($PostOpComplications_id); }
+
+}
+
+class Surgeon extends CtlDb {
+
+	const VALUE = 'value';
+
+	protected static $keys = array(
+		array(self::VALUE),
+	);
+
+	protected static function genChildDbFieldTableTemplate() {
+		return array(
+			self::VALUE => new AccessLayerField(DataTypeName::STRING),
+		);
+	}
+
+	public function getValue() { return $this->childDbFieldTable[self::VALUE]->getValue(); }
+
+}
+
+class Region extends CtlDb {
+
+	const VALUE = 'value';
+
+	protected static $keys = array(
+		array(self::VALUE),
+	);
+
+	protected static function genChildDbFieldTableTemplate() {
+		return array(
+			self::VALUE => new AccessLayerField(DataTypeName::STRING),
+		);
+	}
+
+	public function getValue() { return $this->childDbFieldTable[self::VALUE]->getValue(); }
+
+}
+
+class SurgeryType extends CtlDb {
+
+	const VALUE = 'value';
+
+	protected static $keys = array(
+		array(self::VALUE),
+	);
+
+	protected static function genChildDbFieldTableTemplate() {
+		return array(
+			self::VALUE => new AccessLayerField(DataTypeName::STRING),
+		);
+	}
+
+	public function getValue() { return $this->childDbFieldTable[self::VALUE]->getValue(); }
+
+}
+
+class PostOpComplications extends CtlDb {
+
+	const VALUE = 'value';
+
+	protected static $keys = array(
+		array(self::VALUE),
+	);
+
+	protected static function genChildDbFieldTableTemplate() {
+		return array(
+			self::VALUE => new AccessLayerField(DataTypeName::STRING),
+		);
+	}
+
+	public function getValue() { return $this->childDbFieldTable[self::VALUE]->getValue(); }
 
 }
 

@@ -34,6 +34,58 @@ function createPatientTable() {
   return $patient_table;
 }
 
+function createSurgeonTable() {
+  $surgeon_table = new EnumTable("Surgeon");
+
+  $surgeon_table->addElement("Dr. Soo");
+  $surgeon_table->addElement("Dr. Houseman");
+  $surgeon_table->addElement("Dr. Claybrooks");
+  $surgeon_table->addElement("Dr. Richards");
+
+  return $surgeon_table;
+}
+
+function createSurgeryTable() {
+  $surgery_table = new Table("Surgery");
+  $builder = new ColumnBuilder();
+
+  // Date of surgery
+  $surgery_table->addColumn(
+    $builder
+      ->setName("dos")
+      ->setDataType(DataType::timestamp())
+      ->build()
+  );
+
+  return $surgery_table;
+}
+
+function createRegionTable() {
+  $region_table = new EnumTable("Region");
+
+  $region_table->addElement("cervical");
+  $region_table->addElement("thoracic");
+  $region_table->addElement("lumbar");
+  $region_table->addElement("thoracolumbar");
+  $region_table->addElement("cervicothoracic");
+  
+  return $region_table;
+}
+
+function createSurgeryTypeTable() {
+  $surgery_type_table = new EnumTable("SurgeryType");
+
+  $surgery_type_table->addElement("hemilaminectomy");
+  $surgery_type_table->addElement("laminectomy");
+  $surgery_type_table->addElement("microdisectomy");
+  $surgery_type_table->addElement("fusion");
+  $surgery_type_table->addElement("x-stop");
+  $surgery_type_table->addElement("decompression");
+  $surgery_type_table->addElement("kyphoplasty");
+
+  return $surgery_type_table;
+}
+
 function createPostOpComplicationsTable() {
   $complications_table = new EnumTable("PostOpComplications");
 
@@ -207,17 +259,81 @@ function assembleDb() {
   $patient_table = createPatientTable();
   $ctl_db->addTable($patient_table); 
 
-  $post_op_complications_table = createPostOpComplicationsTable();
-  $ctl_db->addTable($post_op_complications_table); 
+  $surgeon_table = createSurgeonTable();
+  $ctl_db->addEnum($surgeon_table);
 
+  $surgery_table = createSurgeryTable();
+  $ctl_db->addTable($surgery_table);
+
+  // One patient may undergo multiple surgeries
+  $ctl_db->addTableMapping(
+      $patient_table,
+      $surgery_table,
+      TableMappingType::ONE_TO_MANY
+  );
+
+  // One surgeon may conduct multiple surgeries
+  $ctl_db->addTableMapping(
+      $surgeon_table,
+      $surgery_table,
+      TableMappingType::ONE_TO_MANY
+  );
+
+  // Surgery region
+  $region_table = createRegionTable();
+  $ctl_db->addEnum($region_table);
+
+  $ctl_db->addTableMapping(
+    $surgery_table,
+    $region_table,
+    TableMappingType::MANY_TO_MANY
+  );
+
+  // Surgery type
+  $surgery_type_table = createSurgeryTypeTable();
+  $ctl_db->addEnum($surgery_type_table);
+  
+  $ctl_db->addTableMapping(
+    $surgery_table,
+    $surgery_type_table,
+    TableMappingType::MANY_TO_MANY
+  );
+
+  // Post-op complications
+  $post_op_complications_table = createPostOpComplicationsTable();
+  $ctl_db->addEnum($post_op_complications_table); 
+  $ctl_db->addTableMapping(
+      $surgery_table,
+      $post_op_complications_table,
+      TableMappingType::MANY_TO_MANY
+  );
+
+  // Cervical pain raitings
   $cervical_pain_ratings = createCervicalPainRatings(); 
   $ctl_db->addTable($cervical_pain_ratings); 
+  $ctl_db->addTableMapping(
+      $surgery_table,
+      $cervical_pain_ratings,
+      TableMappingType::ONE_TO_MANY
+  );
 
+  // Cervical or thoraxic pain ratings
   $cervical_or_thoraxic_pain_ratings = createCervicalOrThoraxicPainRatings();
   $ctl_db->addTable($cervical_or_thoraxic_pain_ratings); 
+  $ctl_db->addTableMapping(
+      $surgery_table,
+      $cervical_or_thoraxic_pain_ratings,
+      TableMappingType::ONE_TO_MANY
+  );
 
+  // Lumbar pain ratings
   $lumbar_pain_ratings = createLumbar();
   $ctl_db->addTable($lumbar_pain_ratings); 
+  $ctl_db->addTableMapping(
+      $surgery_table,
+      $lumbar_pain_ratings,
+      TableMappingType::ONE_TO_MANY
+  );
 
   return $ctl_db;
 }
@@ -235,4 +351,5 @@ function main() {
   $arch->create($ctl_db, "./");
 }
 
+// -- MAIN
 main();
