@@ -10,14 +10,16 @@ require_once("ExternalDependencies.php");
 function createPainRatingQuestionTableBuilder() {
   $table_builder = new TableBuilder();
   $column_builder = new ColumnBuilder(); 
-
-  $table_builder->setName("PainRatingQuestion");
-
+  
   // Create column
-  $date_col = $column_builder
+  $question_col = $column_builder
     ->setName('question')
     ->setDataType(DataType::string())
     ->build();
+
+  $table_builder
+    ->setName("PainRatingQuestion")
+    ->bindColumn($question_col);
 
   return $table_builder;
 }

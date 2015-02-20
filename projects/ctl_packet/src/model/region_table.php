@@ -23,11 +23,11 @@ function createRegionTableBuilder() {
 
   // Create default rows
   $table_builder
-    ->addElement("cervical"))
-    ->addElement("thoracic"))
-    ->addElement("lumbar"))
-    ->addElement("thoracolumbar"))
-    ->addElement("cervicothoracic"));
+    ->addElement("cervical")
+    ->addElement("thoracic")
+    ->addElement("lumbar")
+    ->addElement("thoracolumbar")
+    ->addElement("cervicothoracic");
    
   return $table_builder;
 }

@@ -2,17 +2,17 @@
 
 require_once("ExternalDependencies.php");
 
+require_once("interval_month_table.php");
+require_once("interval_table.php");
+require_once("pain_rating_answer_table.php");
+require_once("pain_rating_question_table.php");
 require_once("patient_table.php");
+require_once("postop_complication_table.php");
+require_once("region_table.php");
+require_once("researcher_table.php");
 require_once("surgeon_table.php");
 require_once("surgery_table.php");
 require_once("surgery_type_table.php");
-require_once("region_table.php");
-require_once("surgery_type_table.php");
-require_once("postop_complication_table.php");
-require_once("pain_rating_table.php");
-require_once("interval_month_table.php");
-require_once("interval_table.php");
-require_once("pain_rating_answer.php");
 
 /**
  * assembleDb()
@@ -22,19 +22,67 @@ require_once("pain_rating_answer.php");
 function assembleDb() {
   $ctl_db = new Database("CtlDb");
 
-  // Generate table builders (w/o foreign keys and preloaded data)
+  // Generate table builders (w/o foreign keys and preloaded join data)
+  $interval_month_table_builder = createIntervalMonthTableBuilder();
+  $interval_table_builder = createIntervalTableBuilder();
+  $pain_rating_answer_table_builder = createPainRatingAnswerTableBuilder();
+  $pain_rating_question_table_builder = createPainRatingQuestionTableBuilder();
   $patient_table_builder = createPatientTableBuilder();
+  $postop_complication_table_builder = createPostOpComplicationTableBuilder();
+  $region_table_builder = createRegionTableBuilder();
+  $researcher_table_builder = createResearcherTableBuilder();
   $surgeon_table_builder = createSurgeonTableBuilder();
   $surgery_table_builder = createSurgeryTableBuilder();
   $surgery_type_table_builder = createSurgeryTypeTableBuilder();
-  $region_table_builder = createRegionTableBuilder();
-  $postop_complication_table_builder = createPostOpComplicationTableBuilder();
-  $pain_rating_table_builder = createPainRatingTableBuilder();
-  $interval_month_table_builder = createIntervalMonthTableBuilder();
-  $interval_table_builder = createIntervalTableBuilder();
-  $pain_rating_question_table_builder = createPainRatingQuestionTableBuilder();
-  $pain_rating_answer_table_builder = createPainRatingAnswerTableBuilder();
 
+  //// Create one-to-many relationships
+  // Interval month table
+  TableBuilder::makeOneToMany($interval_month_table_builder, $interval_table_builder);
+  
+  // Interval table
+  TableBuilder::makeOneToMany($interval_table_builder, $pain_rating_answer_table_builder);
+  
+  // Pain question table
+  TableBuilder::makeOneToMany($pain_rating_question_table_builder, $pain_rating_answer_table_builder);
+
+  // Patient table
+  TableBuilder::makeOneToMany($patient_table_builder, $surgery_table_builder);
+  
+  // Surgeons table
+  TableBuilder::makeOneToMany($surgeons_table_builder, $surgery_table_builder);
+
+  // Surgery table
+  TableBuilder::makeOneToMany($surgery_table_builder, $interval_table_builder);
+  
+  // Researcher table
+  TableBuilder::makeOneToMany($researcher_table_builder, $interval_table_builder);
+
+  //// Create many-to-many relationships
+  // Interval <--> PostOpComplication
+  $interval_postop_complication_join_builder = TableBuilder::makeManyToMany(
+    $interval_table_builder,
+    $postop_complication_table_builder
+  );
+
+  // Region <--> PainRatingQuestion
+  $region_pain_rating_question_join_builder = createRegionPrqJoinBuilder($region_table_builder, $pain_rating_question_table_builder);
+
+  // Region <--> Surgery
+  $region_surgery_join_builder = TableBuilder::makeManyToMany(
+    $region_table_builder,
+    $surgery_table_builder
+  );
+  
+  // Surgery <--> SurgeryType
+  $surgery_surgerytype_join_builder = TableBuilder::makeManyToMany(
+    $surgery_table_builder,
+    $surgery_type_table_builder
+  );
+
+
+  
+
+  
   // Create one-to-many foreign key constraints
   TableBuilder::makeOneToMany($patient_table_builder, $surgery_table_builder);
   TableBuilder::makeOneToMany($surgeon_table_builder, $surgery_table_builder);

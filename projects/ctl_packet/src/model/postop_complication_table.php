@@ -7,20 +7,20 @@ require_once("ExternalDependencies.php");
  * @relationships:
  *  - many-to-many: Interval 
  */
-function createSurgeryTypeTableBuilder() {
+function createPostOpComplcationTableBuilder() {
   $table_builder = new TableBuilder();
   $column_builder = new ColumnBuilder(); 
 
   $table_builder->setName("PostOpComplication");
 
   // Assemble 'surgery-type' column
-  $surgery_type_col = $column_builder
+  $type_col = $column_builder
     ->setName("type")
     ->setDataType(DataType::string())
     ->setFirstLength(50)
     ->build();
 
-  $table_builder->bindColumn($surgery_type_col);
+  $table_builder->bindColumn($type_col);
 
   $table_builder
     ->addElement("Acute MI")
@@ -38,4 +38,3 @@ function createSurgeryTypeTableBuilder() {
 
   return $table_builder;
 }
-

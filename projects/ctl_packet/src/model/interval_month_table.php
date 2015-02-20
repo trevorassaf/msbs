@@ -11,14 +11,13 @@ function createIntervalMonthTableBuilder() {
   $table_builder = new TableBuilder();
   $column_builder = new ColumnBuilder(); 
 
-  $table_builder->setName("IntervalMonth");
-
-  // Create column
-  $table_builder->bindColumn(
-    $column_builder
-      ->setName('month')
-      ->setDataType(DataType::unsignedInt())
-      ->build()
+  $table_builder
+    ->setName("IntervalMonth")
+    ->bindColumn(
+      $column_builder
+        ->setName('month')
+        ->setDataType(DataType::unsignedInt())
+        ->build()
     );
 
   $table_builder

@@ -3,7 +3,7 @@
 require_once("ExternalDependencies.php");
 
 /**
- * createRegionTableBuilder()
+ * createSurgeryTypeTableBuilder()
  * @relationships:
  *  - many-to-many: Surgery 
  */
@@ -24,14 +24,13 @@ function createSurgeryTypeTableBuilder() {
 
   // Surgery types 
   $table_builder
-    ->addElement("hemilaminectomy"))
-    ->addElement("laminectomy"))
-    ->addElement("microdisectomy"))
-    ->addElement("fusion"))
-    ->addElement("x-stop"))
-    ->addElement("decompression"))
-    ->addElement("kyphoplasty"));
+    ->addElement("hemilaminectomy")
+    ->addElement("laminectomy")
+    ->addElement("microdisectomy")
+    ->addElement("fusion")
+    ->addElement("x-stop")
+    ->addElement("decompression")
+    ->addElement("kyphoplasty");
 
   return $table_builder;
 }
-

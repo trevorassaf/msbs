@@ -8,11 +8,11 @@ require_once("ExternalDependencies.php");
  * @relationships:
  *  - man-to-one: PainRatingQuestion 
  */
-function createPainRatingTableBuilder() {
+function createPainRatingAnswerTableBuilder() {
   $table_builder = new TableBuilder();
   $column_builder = new ColumnBuilder(); 
 
-  $table_builder->setName("PainRating");
+  $table_builder->setName("PainRatingAnswer");
 
   // Create column
   $table_builder->bindColumn(

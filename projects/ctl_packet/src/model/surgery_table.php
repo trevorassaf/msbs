@@ -15,7 +15,7 @@ function createSurgeryTableBuilder() {
   $table_builder->setName("Surgery");
 
   // Date of surgery field
-  $table_builder->addColumn(
+  $table_builder->bindColumn(
     $column_builder
       ->setName("dos")
       ->setDataType(DataType::date())
@@ -23,7 +23,7 @@ function createSurgeryTableBuilder() {
   );
   
   // Length of stay field
-  $table_builder->addColumn(
+  $table_builder->bindColumn(
     $column_builder
       ->setName("los")
       ->setDataType(DataType::unsignedInt())

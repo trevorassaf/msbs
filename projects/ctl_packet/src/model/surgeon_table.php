@@ -14,21 +14,21 @@ function createSurgeonTableBuilder() {
   $table_builder->setName("Surgeon");
 
   // Compose column
-  $name_col = $column_builder
+  $name_col_builder = $column_builder
     ->setName("name")
     ->setDataType(DataType::string())
     ->setFirstLength(15);
-
+  
+  $name_col = $name_col_builder->build();
   $table_builder->bindColumn($name_col);
 
   // Create default rows
   $table_builder
-    ->addElement("Dr. Soo"))
-    ->addElement("Dr. Houseman"))
-    ->addElement("Dr. Claybrooks"))
-    ->addElement("Dr. Richards"))
-    ->addElement("Dr. Bono")
-  );
+    ->addElement( "Dr. Soo")
+    ->addElement( "Dr. Houseman")
+    ->addElement( "Dr. Claybrooks")
+    ->addElement( "Dr. Richards")
+    ->addElement( "Dr. Bono");
 
   return $table_builder;
 }
