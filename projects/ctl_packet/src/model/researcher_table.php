@@ -24,4 +24,6 @@ function createResearcherTableBuilder() {
         ->setName('lastName')
         ->build()
     );
+
+  return $table_builder;
 }

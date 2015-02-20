@@ -12,7 +12,7 @@ function createPainRatingAnswerTableBuilder() {
   $table_builder = new TableBuilder();
   $column_builder = new ColumnBuilder(); 
 
-  $table_builder->setName("PainRatingAnswer");
+  $table_builder->setName("PRA");
 
   // Create column
   $table_builder->bindColumn(

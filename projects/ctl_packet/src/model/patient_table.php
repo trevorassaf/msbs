@@ -6,6 +6,8 @@ function createPatientTableBuilder() {
   $table_builder = new TableBuilder();
   $column_builder = new ColumnBuilder();
 
+  $table_builder->setName('Patient');
+
   // Set common configurations
   $column_builder
     ->setDataType(DataType::string())
@@ -42,6 +44,3 @@ function createPatientTableBuilder() {
 
   return $table_builder;
 }
-
-$patient_builder = createPatientTableBuilder();
-var_dump($patient_builder);

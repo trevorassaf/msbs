@@ -15,10 +15,11 @@ function createPainRatingQuestionTableBuilder() {
   $question_col = $column_builder
     ->setName('question')
     ->setDataType(DataType::string())
+    ->setFirstLength(50)
     ->build();
 
   $table_builder
-    ->setName("PainRatingQuestion")
+    ->setName("PRQ")
     ->bindColumn($question_col);
 
   return $table_builder;

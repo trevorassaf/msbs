@@ -49,7 +49,7 @@ function assembleDb() {
   TableBuilder::makeOneToMany($patient_table_builder, $surgery_table_builder);
   
   // Surgeons table
-  TableBuilder::makeOneToMany($surgeons_table_builder, $surgery_table_builder);
+  TableBuilder::makeOneToMany($surgeon_table_builder, $surgery_table_builder);
 
   // Surgery table
   TableBuilder::makeOneToMany($surgery_table_builder, $interval_table_builder);
@@ -65,7 +65,10 @@ function assembleDb() {
   );
 
   // Region <--> PainRatingQuestion
-  $region_pain_rating_question_join_builder = createRegionPrqJoinBuilder($region_table_builder, $pain_rating_question_table_builder);
+  $region_pain_rating_question_join_builder = createRegionPrqJoinBuilder(
+    $region_table_builder,
+    $pain_rating_question_table_builder
+  );
 
   // Region <--> Surgery
   $region_surgery_join_builder = TableBuilder::makeManyToMany(
@@ -79,128 +82,129 @@ function assembleDb() {
     $surgery_type_table_builder
   );
 
-
-  
-
-  
-  // Create one-to-many foreign key constraints
-  TableBuilder::makeOneToMany($patient_table_builder, $surgery_table_builder);
-  TableBuilder::makeOneToMany($surgeon_table_builder, $surgery_table_builder);
-  TableBuilder::makeOneToMany($surgery_table_builder, $interval_table_builder);
-  TableBuilder::makeOneToMany($interval_month_table_builder, $interval_table_builder);
-  TableBuilder::makeOneToMany($interval_table_builder, $pain_rating_answer_table_builder);
-  TableBuilder::makeOneToMany($pain_rating_questions_table_builder, $pain_rating_answer_table_builder);
-
-  // Create join tables 
-  $surgery_type_join_builder = TableBuilder::makeManyToMany($surgery_type_table_builder, $surgery_table_builder);
-  $surgery_region_join_builder = TableBuilder::makeManyToMany($region_table_builder, $surgery_table_builder);
-  $postop_interval_join_builder = TableBuilder::makeManyToMany($interval_table_builder, $postop_complication_table_builder);
-
-  // Create join table builders
-  $region_question_join_builder = TableBuilder::makeManyToMany($region_table_builder, $pain_rating_question_table_builder);
-  loadRegionQuestionJoinBuilder($);
-
-  // Bind tables to database
-  $ctl_db->setTables(
+  // Assemble db
+  $ctl_db->setAndBuildTableBuilders(
     array(
       // Canonical tables
-      $patient_table_builder->build(),
-      $surgeon_table_builder->build(),
-      $surgery_table_builder->build(),
-      $region_table_builder->build(),
-      $postop_complication_builder->build(),
-      $pain_rating_table_builder->build(),
-      $interval_month_table_builder->build(),
-      $pain_rating_question_table_builder->build(),
-      $pain_rating_answer_table_builder->build(),
+      $interval_month_table_builder,
+      $interval_table_builder,
+      $pain_rating_answer_table_builder,
+      $pain_rating_question_table_builder,
+      $patient_table_builder,
+      $postop_complication_table_builder,
+      $region_table_builder,
+      $researcher_table_builder,
+      $surgeon_table_builder,
+      $surgery_table_builder,
+      $surgery_type_table_builder,
 
       // Join tables
-      $surgery_type_join_builder->build(),
-      $surgery_region_join_builder->build(),
-      $postop_interval_join_builder->build(),
-      $region_question_join_builder->build(),
+      $interval_postop_complication_join_builder,
+      $region_pain_rating_question_join_builder,
+      $region_surgery_join_builder,
+      $surgery_surgerytype_join_builder,
+    )
+  );
+  
+  return $ctl_db;
+}
+
+/**
+ * createRegionPrqJoinBuilder()
+ * - Generates join table for region and prq tables.
+ * @param region_table_builder : TableBuilder for region
+ * @param prq_table_builder : TableBuilder for prq
+ * @return TableBuilder : join table
+ */
+function createRegionPrqJoinBuilder($region_table_builder, $prq_table_builder) {
+  $join_name = 'RegionPrqMapping';
+  $region_fk_name = 'regionId';
+  $prq_fk_name = 'prqId';
+
+  // Create join table
+  $join_builder = TableBuilder::makeManyToMany(
+    $region_table_builder,
+    $prq_table_builder,
+    $join_name,
+    $region_fk_name,
+    $prq_fk_name
+  );
+
+  // Fetch name of region col
+  $region_col_map = $region_table_builder->getColumns();
+
+  // Fail bc we expect 1 column in region table
+  assert(sizeof($region_col_map) == 1);
+
+  $region_col_name = array_keys($region_col_map)[0];
+
+  // Fetch name of prq col
+  $prq_col_map = $prq_table_builder->getColumns();
+
+  // Fail bc we expect 1 column in prq table
+  assert(sizeof($prq_col_map) == 1);
+
+  $prq_col_name = array_keys($prq_col_map)[0];
+
+  //// Populate join table w/default values
+  // Cervical questions
+  TableBuilder::loadJoinTable(
+    $region_table_builder,
+    $prq_table_builder,
+    $join_builder,
+    $region_fk_name,
+    $prq_fk_name,
+    array($region_col_name => 'cervical'),
+    array(
+      array($prq_col_name => 'Do you have neck pain?'),
+      array($prq_col_name => 'Do you have pain at the base of your head?'),
+      array($prq_col_name => 'Do you have headaches?'),
+      array($prq_col_name => 'Do you have arm pain?'),
+      array($prq_col_name => 'Do you have shoulder pain'),
+      array($prq_col_name => 'Do you have pain in between the shoulder blades?'),
+      array($prq_col_name => 'Do you have upper thoracic pain?'),
+      array($prq_col_name => 'Do you have middle thoracic pain?'),
+      array($prq_col_name => 'Do you have lower thoracic pain?'),
+      array($prq_col_name => 'Do you have leg pain?'),
     )
   );
 
-
-
-  $surgeon_table = createSurgeonTable();
-  $ctl_db->addEnum($surgeon_table);
-
-  $surgery_table = createSurgeryTable();
-  $ctl_db->addTable($surgery_table);
-
-  // One patient may undergo multiple surgeries
-  $ctl_db->addTableMapping(
-      $patient_table,
-      $surgery_table,
-      TableMappingType::ONE_TO_MANY
+  // Thoracic questions 
+  TableBuilder::loadJoinTable(
+    $region_table_builder,
+    $prq_table_builder,
+    $join_builder,
+    $region_fk_name,
+    $prq_fk_name,
+    array($region_col_name => 'thoracic'),
+    array(
+      array($prq_col_name => 'Do you have upper thoracic pain?'),
+      array($prq_col_name => 'Do you have middle thoracic pain?'),
+      array($prq_col_name => 'Do you have lower thoracic pain?'),
+      array($prq_col_name => 'Do you have arm pain?'),
+      array($prq_col_name => 'Do you have shoulder pain'),
+      array($prq_col_name => 'Do you have pain in between the shoulder blades?'),
+      array($prq_col_name => 'Do you have leg pain?'),
+    )
   );
 
-  // One surgeon may conduct multiple surgeries
-  $ctl_db->addTableMapping(
-      $surgeon_table,
-      $surgery_table,
-      TableMappingType::ONE_TO_MANY
+  // Lumbar questions 
+  TableBuilder::loadJoinTable(
+    $region_table_builder,
+    $prq_table_builder,
+    $join_builder,
+    $region_fk_name,
+    $prq_fk_name,
+    array($region_col_name => 'lumbar'),
+    array(
+      array($prq_col_name => 'Do you have back pain?'),
+      array($prq_col_name => 'Do you have leg pain?'),
+      array($prq_col_name => 'Do you have groin pain?'),
+      array($prq_col_name => 'Do you have testicular pain?'),
+    )
   );
 
-  // Surgery region
-  $region_table = createRegionTable();
-  $ctl_db->addEnum($region_table);
-
-  $ctl_db->addTableMapping(
-    $surgery_table,
-    $region_table,
-    TableMappingType::MANY_TO_MANY
-  );
-
-  // Surgery type
-  $surgery_type_table = createSurgeryTypeTable();
-  $ctl_db->addEnum($surgery_type_table);
-  
-  $ctl_db->addTableMapping(
-    $surgery_table,
-    $surgery_type_table,
-    TableMappingType::MANY_TO_MANY
-  );
-
-  // Post-op complications
-  $post_op_complications_table = createPostOpComplicationsTable();
-  $ctl_db->addEnum($post_op_complications_table); 
-  $ctl_db->addTableMapping(
-      $surgery_table,
-      $post_op_complications_table,
-      TableMappingType::MANY_TO_MANY
-  );
-
-  // Cervical pain raitings
-  $cervical_pain_ratings = createCervicalPainRatings(); 
-  $ctl_db->addTable($cervical_pain_ratings); 
-  $ctl_db->addTableMapping(
-      $surgery_table,
-      $cervical_pain_ratings,
-      TableMappingType::ONE_TO_MANY
-  );
-
-  // Cervical or thoraxic pain ratings
-  $cervical_or_thoraxic_pain_ratings = createCervicalOrThoraxicPainRatings();
-  $ctl_db->addTable($cervical_or_thoraxic_pain_ratings); 
-  $ctl_db->addTableMapping(
-      $surgery_table,
-      $cervical_or_thoraxic_pain_ratings,
-      TableMappingType::ONE_TO_MANY
-  );
-
-  // Lumbar pain ratings
-  $lumbar_pain_ratings = createLumbar();
-  $ctl_db->addTable($lumbar_pain_ratings); 
-  $ctl_db->addTableMapping(
-      $surgery_table,
-      $lumbar_pain_ratings,
-      TableMappingType::ONE_TO_MANY
-  );
-
-  return $ctl_db;
+  return $join_builder; 
 }
 
 function main() {

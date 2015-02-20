@@ -7,11 +7,11 @@ require_once("ExternalDependencies.php");
  * @relationships:
  *  - many-to-many: Interval 
  */
-function createPostOpComplcationTableBuilder() {
+function createPostOpComplicationTableBuilder() {
   $table_builder = new TableBuilder();
   $column_builder = new ColumnBuilder(); 
 
-  $table_builder->setName("PostOpComplication");
+  $table_builder->setName("POC");
 
   // Assemble 'surgery-type' column
   $type_col = $column_builder

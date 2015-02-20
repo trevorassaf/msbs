@@ -17,6 +17,7 @@ function createRegionTableBuilder() {
       ->setName('name')
       ->setIsReadOnly(true)
       ->setDataType(DataType::string())
+      ->setFirstLength(15)
       ->build();
 
   $table_builder->bindColumn($region_col);
@@ -25,9 +26,7 @@ function createRegionTableBuilder() {
   $table_builder
     ->addElement("cervical")
     ->addElement("thoracic")
-    ->addElement("lumbar")
-    ->addElement("thoracolumbar")
-    ->addElement("cervicothoracic");
+    ->addElement("lumbar");
    
   return $table_builder;
 }
