@@ -25,67 +25,67 @@ class IntervalMonth extends CtlDb {
 
 class Interval extends CtlDb {
 
-	const self::_INTERVAL_MONTH_ID = 'IntervalMonthId';
-	const self::_SURGERY_ID = 'SurgeryId';
-	const self::_RESEARCHER_ID = 'ResearcherId';
+	const self::INTERVAL_MONTH_ID = 'intervalMonthId';
+	const self::SURGERY_ID = 'surgeryId';
+	const self::RESEARCHER_ID = 'researcherId';
 
 	protected static $keys = array();
 
 	protected static function genChildDbFieldTableTemplate() {
 		return array(
-			self::self::_INTERVAL_MONTH_ID => new AccessLayerField(DataTypeName::FOREIGN_KEY),
-			self::self::_SURGERY_ID => new AccessLayerField(DataTypeName::FOREIGN_KEY),
-			self::self::_RESEARCHER_ID => new AccessLayerField(DataTypeName::FOREIGN_KEY),
+			self::self::INTERVAL_MONTH_ID => new AccessLayerField(DataTypeName::FOREIGN_KEY),
+			self::self::SURGERY_ID => new AccessLayerField(DataTypeName::FOREIGN_KEY),
+			self::self::RESEARCHER_ID => new AccessLayerField(DataTypeName::FOREIGN_KEY),
 		);
 	}
 
-	public function getIntervalMonthId() { return $this->childDbFieldTable[self::self::_INTERVAL_MONTH_ID]->getValue(); }
+	public function getIntervalMonthId() { return $this->childDbFieldTable[self::self::INTERVAL_MONTH_ID]->getValue(); }
 
-	public function getSurgeryId() { return $this->childDbFieldTable[self::self::_SURGERY_ID]->getValue(); }
+	public function getSurgeryId() { return $this->childDbFieldTable[self::self::SURGERY_ID]->getValue(); }
 
-	public function getResearcherId() { return $this->childDbFieldTable[self::self::_RESEARCHER_ID]->getValue(); }
+	public function getResearcherId() { return $this->childDbFieldTable[self::self::RESEARCHER_ID]->getValue(); }
 
-	public function setIntervalMonthId($IntervalMonthId) { $this->childDbFieldTable[self::self::_INTERVAL_MONTH_ID]->setValue($IntervalMonthId); }
+	public function setIntervalMonthId($intervalMonthId) { $this->childDbFieldTable[self::self::INTERVAL_MONTH_ID]->setValue($intervalMonthId); }
 
-	public function setSurgeryId($SurgeryId) { $this->childDbFieldTable[self::self::_SURGERY_ID]->setValue($SurgeryId); }
+	public function setSurgeryId($surgeryId) { $this->childDbFieldTable[self::self::SURGERY_ID]->setValue($surgeryId); }
 
-	public function setResearcherId($ResearcherId) { $this->childDbFieldTable[self::self::_RESEARCHER_ID]->setValue($ResearcherId); }
+	public function setResearcherId($researcherId) { $this->childDbFieldTable[self::self::RESEARCHER_ID]->setValue($researcherId); }
 
 
 }
 
-class PRA extends CtlDb {
+class Pra extends CtlDb {
 
 	const self::SEVERITY = 'severity';
-	const self::_INTERVAL_ID = 'IntervalId';
-	const self::_P_R_Q_ID = 'PRQId';
+	const self::INTERVAL_ID = 'intervalId';
+	const self::PRQ_ID = 'prqId';
 
 	protected static $keys = array();
 
 	protected static function genChildDbFieldTableTemplate() {
 		return array(
 			self::self::SEVERITY => new AccessLayerField(DataTypeName::UNSIGNED_INT),
-			self::self::_INTERVAL_ID => new AccessLayerField(DataTypeName::FOREIGN_KEY),
-			self::self::_P_R_Q_ID => new AccessLayerField(DataTypeName::FOREIGN_KEY),
+			self::self::INTERVAL_ID => new AccessLayerField(DataTypeName::FOREIGN_KEY),
+			self::self::PRQ_ID => new AccessLayerField(DataTypeName::FOREIGN_KEY),
 		);
 	}
 
 	public function getSeverity() { return $this->childDbFieldTable[self::self::SEVERITY]->getValue(); }
 
-	public function getIntervalId() { return $this->childDbFieldTable[self::self::_INTERVAL_ID]->getValue(); }
+	public function getIntervalId() { return $this->childDbFieldTable[self::self::INTERVAL_ID]->getValue(); }
 
-	public function getPRQId() { return $this->childDbFieldTable[self::self::_P_R_Q_ID]->getValue(); }
+	public function getPrqId() { return $this->childDbFieldTable[self::self::PRQ_ID]->getValue(); }
 
 	public function setSeverity($severity) { $this->childDbFieldTable[self::self::SEVERITY]->setValue($severity); }
 
-	public function setIntervalId($IntervalId) { $this->childDbFieldTable[self::self::_INTERVAL_ID]->setValue($IntervalId); }
+	public function setIntervalId($intervalId) { $this->childDbFieldTable[self::self::INTERVAL_ID]->setValue($intervalId); }
 
-	public function setPRQId($PRQId) { $this->childDbFieldTable[self::self::_P_R_Q_ID]->setValue($PRQId); }
+	public function setPrqId($prqId) { $this->childDbFieldTable[self::self::PRQ_ID]->setValue($prqId); }
 
 
 }
 
-class PRQ extends CtlDb {
+class Prq extends CtlDb {
 
 	const self::QUESTION = 'question';
 
@@ -141,7 +141,7 @@ class Patient extends CtlDb {
 
 }
 
-class POC extends CtlDb {
+class Poc extends CtlDb {
 
 	const self::TYPE = 'type';
 
@@ -183,6 +183,8 @@ class Researcher extends CtlDb {
 
 	const self::FIRST_NAME = 'firstName';
 	const self::LAST_NAME = 'lastName';
+	const self::PASSWORD = 'password';
+	const self::EMAIL = 'email';
 
 	protected static $keys = array();
 
@@ -190,6 +192,8 @@ class Researcher extends CtlDb {
 		return array(
 			self::self::FIRST_NAME => new AccessLayerField(DataTypeName::STRING),
 			self::self::LAST_NAME => new AccessLayerField(DataTypeName::STRING),
+			self::self::PASSWORD => new AccessLayerField(DataTypeName::STRING),
+			self::self::EMAIL => new AccessLayerField(DataTypeName::STRING),
 		);
 	}
 
@@ -197,9 +201,17 @@ class Researcher extends CtlDb {
 
 	public function getLastName() { return $this->childDbFieldTable[self::self::LAST_NAME]->getValue(); }
 
+	public function getPassword() { return $this->childDbFieldTable[self::self::PASSWORD]->getValue(); }
+
+	public function getEmail() { return $this->childDbFieldTable[self::self::EMAIL]->getValue(); }
+
 	public function setFirstName($firstName) { $this->childDbFieldTable[self::self::FIRST_NAME]->setValue($firstName); }
 
 	public function setLastName($lastName) { $this->childDbFieldTable[self::self::LAST_NAME]->setValue($lastName); }
+
+	public function setPassword($password) { $this->childDbFieldTable[self::self::PASSWORD]->setValue($password); }
+
+	public function setEmail($email) { $this->childDbFieldTable[self::self::EMAIL]->setValue($email); }
 
 
 }
@@ -227,8 +239,8 @@ class Surgery extends CtlDb {
 
 	const self::DOS = 'dos';
 	const self::LOS = 'los';
-	const self::_PATIENT_ID = 'PatientId';
-	const self::_SURGEON_ID = 'SurgeonId';
+	const self::PATIENT_ID = 'patientId';
+	const self::SURGEON_ID = 'surgeonId';
 
 	protected static $keys = array();
 
@@ -236,8 +248,8 @@ class Surgery extends CtlDb {
 		return array(
 			self::self::DOS => new AccessLayerField(DataTypeName::DATE),
 			self::self::LOS => new AccessLayerField(DataTypeName::UNSIGNED_INT),
-			self::self::_PATIENT_ID => new AccessLayerField(DataTypeName::FOREIGN_KEY),
-			self::self::_SURGEON_ID => new AccessLayerField(DataTypeName::FOREIGN_KEY),
+			self::self::PATIENT_ID => new AccessLayerField(DataTypeName::FOREIGN_KEY),
+			self::self::SURGEON_ID => new AccessLayerField(DataTypeName::FOREIGN_KEY),
 		);
 	}
 
@@ -245,17 +257,17 @@ class Surgery extends CtlDb {
 
 	public function getLos() { return $this->childDbFieldTable[self::self::LOS]->getValue(); }
 
-	public function getPatientId() { return $this->childDbFieldTable[self::self::_PATIENT_ID]->getValue(); }
+	public function getPatientId() { return $this->childDbFieldTable[self::self::PATIENT_ID]->getValue(); }
 
-	public function getSurgeonId() { return $this->childDbFieldTable[self::self::_SURGEON_ID]->getValue(); }
+	public function getSurgeonId() { return $this->childDbFieldTable[self::self::SURGEON_ID]->getValue(); }
 
 	public function setDos($dos) { $this->childDbFieldTable[self::self::DOS]->setValue($dos); }
 
 	public function setLos($los) { $this->childDbFieldTable[self::self::LOS]->setValue($los); }
 
-	public function setPatientId($PatientId) { $this->childDbFieldTable[self::self::_PATIENT_ID]->setValue($PatientId); }
+	public function setPatientId($patientId) { $this->childDbFieldTable[self::self::PATIENT_ID]->setValue($patientId); }
 
-	public function setSurgeonId($SurgeonId) { $this->childDbFieldTable[self::self::_SURGEON_ID]->setValue($SurgeonId); }
+	public function setSurgeonId($surgeonId) { $this->childDbFieldTable[self::self::SURGEON_ID]->setValue($surgeonId); }
 
 
 }
@@ -279,27 +291,27 @@ class SurgeryType extends CtlDb {
 
 }
 
-class Interval_POC_join_table extends CtlDb {
+class IntervalToPocMapping extends CtlDb {
 
-	const self::_INTERVAL_ID = 'IntervalId';
-	const self::_P_O_C_ID = 'POCId';
+	const self::INTERVAL_ID = 'intervalId';
+	const self::POC_ID = 'pocId';
 
 	protected static $keys = array();
 
 	protected static function genChildDbFieldTableTemplate() {
 		return array(
-			self::self::_INTERVAL_ID => new AccessLayerField(DataTypeName::FOREIGN_KEY),
-			self::self::_P_O_C_ID => new AccessLayerField(DataTypeName::FOREIGN_KEY),
+			self::self::INTERVAL_ID => new AccessLayerField(DataTypeName::FOREIGN_KEY),
+			self::self::POC_ID => new AccessLayerField(DataTypeName::FOREIGN_KEY),
 		);
 	}
 
-	public function getIntervalId() { return $this->childDbFieldTable[self::self::_INTERVAL_ID]->getValue(); }
+	public function getIntervalId() { return $this->childDbFieldTable[self::self::INTERVAL_ID]->getValue(); }
 
-	public function getPOCId() { return $this->childDbFieldTable[self::self::_P_O_C_ID]->getValue(); }
+	public function getPocId() { return $this->childDbFieldTable[self::self::POC_ID]->getValue(); }
 
-	public function setIntervalId($IntervalId) { $this->childDbFieldTable[self::self::_INTERVAL_ID]->setValue($IntervalId); }
+	public function setIntervalId($intervalId) { $this->childDbFieldTable[self::self::INTERVAL_ID]->setValue($intervalId); }
 
-	public function setPOCId($POCId) { $this->childDbFieldTable[self::self::_P_O_C_ID]->setValue($POCId); }
+	public function setPocId($pocId) { $this->childDbFieldTable[self::self::POC_ID]->setValue($pocId); }
 
 
 }
@@ -329,52 +341,52 @@ class RegionPrqMapping extends CtlDb {
 
 }
 
-class Region_Surgery_join_table extends CtlDb {
+class RegionToSurgeryMapping extends CtlDb {
 
-	const self::_REGION_ID = 'RegionId';
-	const self::_SURGERY_ID = 'SurgeryId';
+	const self::REGION_ID = 'regionId';
+	const self::SURGERY_ID = 'surgeryId';
 
 	protected static $keys = array();
 
 	protected static function genChildDbFieldTableTemplate() {
 		return array(
-			self::self::_REGION_ID => new AccessLayerField(DataTypeName::FOREIGN_KEY),
-			self::self::_SURGERY_ID => new AccessLayerField(DataTypeName::FOREIGN_KEY),
+			self::self::REGION_ID => new AccessLayerField(DataTypeName::FOREIGN_KEY),
+			self::self::SURGERY_ID => new AccessLayerField(DataTypeName::FOREIGN_KEY),
 		);
 	}
 
-	public function getRegionId() { return $this->childDbFieldTable[self::self::_REGION_ID]->getValue(); }
+	public function getRegionId() { return $this->childDbFieldTable[self::self::REGION_ID]->getValue(); }
 
-	public function getSurgeryId() { return $this->childDbFieldTable[self::self::_SURGERY_ID]->getValue(); }
+	public function getSurgeryId() { return $this->childDbFieldTable[self::self::SURGERY_ID]->getValue(); }
 
-	public function setRegionId($RegionId) { $this->childDbFieldTable[self::self::_REGION_ID]->setValue($RegionId); }
+	public function setRegionId($regionId) { $this->childDbFieldTable[self::self::REGION_ID]->setValue($regionId); }
 
-	public function setSurgeryId($SurgeryId) { $this->childDbFieldTable[self::self::_SURGERY_ID]->setValue($SurgeryId); }
+	public function setSurgeryId($surgeryId) { $this->childDbFieldTable[self::self::SURGERY_ID]->setValue($surgeryId); }
 
 
 }
 
-class Surgery_SurgeryType_join_table extends CtlDb {
+class SurgeryToSurgeryTypeMapping extends CtlDb {
 
-	const self::_SURGERY_ID = 'SurgeryId';
-	const self::_SURGERY_TYPE_ID = 'SurgeryTypeId';
+	const self::SURGERY_ID = 'surgeryId';
+	const self::SURGERY_TYPE_ID = 'surgeryTypeId';
 
 	protected static $keys = array();
 
 	protected static function genChildDbFieldTableTemplate() {
 		return array(
-			self::self::_SURGERY_ID => new AccessLayerField(DataTypeName::FOREIGN_KEY),
-			self::self::_SURGERY_TYPE_ID => new AccessLayerField(DataTypeName::FOREIGN_KEY),
+			self::self::SURGERY_ID => new AccessLayerField(DataTypeName::FOREIGN_KEY),
+			self::self::SURGERY_TYPE_ID => new AccessLayerField(DataTypeName::FOREIGN_KEY),
 		);
 	}
 
-	public function getSurgeryId() { return $this->childDbFieldTable[self::self::_SURGERY_ID]->getValue(); }
+	public function getSurgeryId() { return $this->childDbFieldTable[self::self::SURGERY_ID]->getValue(); }
 
-	public function getSurgeryTypeId() { return $this->childDbFieldTable[self::self::_SURGERY_TYPE_ID]->getValue(); }
+	public function getSurgeryTypeId() { return $this->childDbFieldTable[self::self::SURGERY_TYPE_ID]->getValue(); }
 
-	public function setSurgeryId($SurgeryId) { $this->childDbFieldTable[self::self::_SURGERY_ID]->setValue($SurgeryId); }
+	public function setSurgeryId($surgeryId) { $this->childDbFieldTable[self::self::SURGERY_ID]->setValue($surgeryId); }
 
-	public function setSurgeryTypeId($SurgeryTypeId) { $this->childDbFieldTable[self::self::_SURGERY_TYPE_ID]->setValue($SurgeryTypeId); }
+	public function setSurgeryTypeId($surgeryTypeId) { $this->childDbFieldTable[self::self::SURGERY_TYPE_ID]->setValue($surgeryTypeId); }
 
 
 }

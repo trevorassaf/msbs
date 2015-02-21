@@ -25,5 +25,20 @@ function createResearcherTableBuilder() {
         ->build()
     );
 
+    // Auth info 
+    $table_builder
+      ->bindColumn(
+        $column_builder
+          ->setName('password')
+          ->setFirstLength(64)
+          ->build()
+      )
+      ->bindColumn(
+        $column_builder
+          ->setName('email')
+          ->setFirstLength(254)
+          ->build()
+      );
+
   return $table_builder;
 }

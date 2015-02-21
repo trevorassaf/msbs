@@ -19,7 +19,7 @@ function createPainRatingQuestionTableBuilder() {
     ->build();
 
   $table_builder
-    ->setName("PRQ")
+    ->setName("Prq")
     ->bindColumn($question_col);
 
   return $table_builder;

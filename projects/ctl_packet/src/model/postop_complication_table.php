@@ -11,7 +11,7 @@ function createPostOpComplicationTableBuilder() {
   $table_builder = new TableBuilder();
   $column_builder = new ColumnBuilder(); 
 
-  $table_builder->setName("POC");
+  $table_builder->setName("Poc");
 
   // Assemble 'surgery-type' column
   $type_col = $column_builder
